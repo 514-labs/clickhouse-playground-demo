@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - "**"
+      
 
 permissions:
   pull-requests: write
@@ -29,7 +30,7 @@ jobs:
       - name: Plan
         id: plan
         run: |
-          PLAN_OUTPUT=$(moose plan --url https://514-demos-demo-aircraft-cc-main-f6030.boreal.cloud --token 80a5f39a132587f223d416da5872e521.d0062176722bc39368af1b4e41fab20f
+          PLAN_OUTPUT=$(moose plan --url https://514-demos-demo-aircraft-cc-main-f6030.boreal.cloud --token ${{ secrets.MOOSE_ADMIN_TOKEN }})
           echo "plan<<EOF" >> $GITHUB_OUTPUT
           echo "$PLAN_OUTPUT" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
