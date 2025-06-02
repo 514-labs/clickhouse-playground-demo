@@ -1,0 +1,49 @@
+name: Plan Moose Changes
+on:
+  push:
+    branches:
+      - "**"
+
+permissions:
+  pull-requests: write
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Install Moose
+        run: curl -SfsL https://fiveonefour.com/install.sh | bash -s -- moose
+
+      - name: Plan
+        id: plan
+        run: |
+          PLAN_OUTPUT=$(moose plan --url https://514-demos-demo-aircraft-cc-main-f6030.boreal.cloud --token 80a5f39a132587f223d416da5872e521.d0062176722bc39368af1b4e41fab20f
+          echo "plan<<EOF" >> $GITHUB_OUTPUT
+          echo "$PLAN_OUTPUT" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - uses: jwalton/gh-find-current-pr@v1
+        id: finder
+
+      - uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          number: ${{ steps.finder.outputs.pr }}
+          message: |
+            ## Plan
+            Changes that will be applied to the infrastructure when this PR is merged:
+
+            ```
+            ${{ steps.plan.outputs.plan }}
+            ``` 
