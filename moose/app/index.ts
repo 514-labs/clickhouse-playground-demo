@@ -8,4 +8,4 @@ export * from "./views/materializedRunningAverage";
 // APIs - UK Aggregated Prices
 export * from "./apis/ukAggregatedPricesApi";
 
-// export * from "./datamodels/Foo";
+export * from "./datamodels/Foo";
