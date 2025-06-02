@@ -26,7 +26,9 @@ jobs:
         working-directory: ./moose
 
       - name: Install Moose
-        run: curl -SfsL https://fiveonefour.com/install.sh | bash -s -- moose
+        run: |
+          curl -SfsL https://fiveonefour.com/install.sh | bash -s -- moose
+          echo "$HOME/.moose/bin" >> $GITHUB_PATH
 
       - name: Plan
         id: plan
