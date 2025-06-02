@@ -21,17 +21,16 @@ jobs:
           node-version: "20"
           cache: "npm"
           
-      - name: Change to moose directory
-        run: cd moose
-
       - name: Install Dependencies
         run: npm ci
+        working-directory: ./moose
 
       - name: Install Moose
         run: curl -SfsL https://fiveonefour.com/install.sh | bash -s -- moose
 
       - name: Plan
         id: plan
+        working-directory: ./moose
         run: |
           PLAN_OUTPUT=$(moose plan --url https://514-demos-demo-aircraft-cc-main-f6030.boreal.cloud --token ${{ secrets.MOOSE_ADMIN_TOKEN }})
           echo "plan<<EOF" >> $GITHUB_OUTPUT
